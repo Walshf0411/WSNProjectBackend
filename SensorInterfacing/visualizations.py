@@ -98,11 +98,14 @@ def do_visualization(temprature_data):
 
     plt.scatter(settings.x_coordinates, settings.y_coordinates, c='blue', label="Temperature sensors")
     #plt.grid()
+    plt.plot([7, 8, 7, 8, 7, 7], [1.5, 1.5, 1, 1, 1.5, 1], label='Entrance', color='g')
     plt.legend(handles=[
         Patch(facecolor=(1, 0, 0, 1), edgecolor='r', label='Temperature > '+str(threshold)),
         Patch(facecolor=(0, 0, 1, 1), edgecolor='b', label='Temperature < ' + str(threshold)), 
         Line2D([0], [0], marker='o', color='w', label='Temperature Sensors', markerfacecolor='b', markersize=8),
+        Line2D([0], [0], lw=4, color='g', label='Entrance')
     ])
+
     base_name = "temprature_profile.png"
     # generating an image path
     path_to_image = os.path.join(settings.MEDIA_ROOT, base_name)
