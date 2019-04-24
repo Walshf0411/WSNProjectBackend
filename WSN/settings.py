@@ -122,3 +122,34 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+# Topology details
+NUMBER_OF_NODES = 5
+
+# x cordinates and y coordinates respectively of the nodes.
+# this is for plotting individual temprature sensor on the figure
+# these variable are necessary for plotting the temperature profile
+# however this does not ensure that any extra values wont be calculated.
+x_coordinates = [2, 4, 6, 2, 4]
+y_coordinates = [2, 2, 2, 4, 4]
+
+
+# coordinates of the nodes
+NODES = dict()
+
+# this is for generating the coordinates of the nodes from their x and y coordinates
+for i in range(NUMBER_OF_NODES):
+    NODES.update({
+        i + 1: [x_coordinates[i], y_coordinates[i]]
+    })
+
+# other points of the room that need to be plotted
+EXTRA_POINTS = (
+    (2, 6),
+    (4, 6), 
+    (6, 6), 
+    (6, 4),
+    (8, 6), 
+    (8, 4), 
+    (8, 2),
+)

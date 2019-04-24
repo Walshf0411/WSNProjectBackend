@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Temprature Profile</title>
+    <title>Temperature Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href='{% static "SensorInterfacing/get_visualization.css" %}'>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- jQuery library -->
@@ -16,21 +18,58 @@
 </head>
 <body>
     <div class="container" style="margin-top:20px">
-        <h1>Temprature Profiling</h1>
-        <div class="jumbotron">
-            <img src="" alt="" class="img-responsive" id="image_box">
+        <h1>Temperature Profiling</h1>
+        <div class="container">
+            <div class="image-container" align=center>
+                <img src="" alt="" class="img-responsive" id="image_box">
+            </div>
+            <div class="progress-container">
+                <span>Fetching latest data for you.</span>
+                <div id="myProgress">
+                    <div id="myBar"></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script>
     $(document).ready(function(){
-        $.ajax({
+        function move() {
+            var elem = document.getElementById("myBar"); 
+            var width = 1;
+            var id = setInterval(frame, 20);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                } else {
+                    width = (width + 1) % 100; 
+                    elem.style.width = width + '%'; 
+                }
+            }
+        }
+
+        var requestObject = {
             url :"{% url 'get_visualization' %}", 
             success: function(result){
                 console.log(result);
                 $("#image_box").attr("src", result.path);
+                $(".progress-container").css("display", 'none');
+                $("#image_box").css("display", 'block');
             }
-        });
+        }
+        // this the first request.
+        $.ajax(requestObject);
+        // show progress bar
+        move();
+        
+        // refreshing every 15 secods
+        setInterval(function() {
+            $.ajax(requestObject);
+            $("#image_box").css("display", 'none');
+            $(".progress-container").css("display", 'block');
+            move();
+        }, 15000);
+
     });
 </script>
 </html>
